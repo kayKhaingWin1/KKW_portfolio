@@ -77,9 +77,12 @@ useGLTF.preload("/path-to-anya.glb");
 function Loader() {
   const { progress } = useProgress();
   return (
-    <Html center>
-      <div className="text-white text-lg font-bold">
-        Loading 3D... {progress.toFixed(0)}%
+    <Html className=" relative ">
+      <div className="flex absolute bottom-28 space-y-2 space-x-3">
+        <div className="w-12 h-12 border-4 border-t-pink-300 border-b-purple-300 border-l-transparent border-r-transparent rounded-full animate-spin"></div>
+        <div className="text-white text-lg font-bold">
+          Loading 3D... {progress.toFixed(0)}%
+        </div>
       </div>
     </Html>
   );

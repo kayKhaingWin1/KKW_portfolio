@@ -128,7 +128,7 @@ export default function Header() {
           className={`text-2xl font-bold tracking-wide transition-colors duration-500 ${isLightSection ? "text-pink-600" : "text-pink-200"
             }`}
         >
-          Anya.dev
+          <img src="../images/logo.png" className="w-16 h-16" alt="" />
         </h1>
 
         {/* Desktop Menu */}
