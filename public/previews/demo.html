@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Demo Preview</title>
+  <style>
+    html,
+    body {
+      height: max-content;
+      margin: 0;
+      padding: 0 20px 60px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a1a, #2b2b3c, #a26da9, #f7d6ec);
+      color: white;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 0.75rem;
+      background: linear-gradient(to right, #fde68a, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .floating-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.15;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+
+    .pink {
+      width: 380px;
+      height: 380px;
+      background-color: #f9a8d4;
+      top: -120px;
+      left: -120px;
+    }
+
+    .purple {
+      width: 380px;
+      height: 380px;
+      background-color: #c084fc;
+      bottom: -120px;
+      right: -120px;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+
+      100% {
+        transform: translateY(20px) scale(1.1);
+      }
+    }
+
+    .section {
+      max-width: 960px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img {
+      width: 100%;
+      display: block;
+    }
+
+    .caption {
+      padding: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+      color: #e0d5ff;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #d8d8ff;
+      margin-top: 40px;
+    }
+
+    .visit-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .visit {
+      display: inline-block;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #1a1a1a, #2b2b3c, #a26da9, #f7d6ec);
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .visit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: skewX(-20deg);
+      animation: shimmer 2.5s infinite;
+      z-index: 2;
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -75%;
+      }
+
+      100% {
+        left: 125%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .card .caption {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="section">
+    <h2>🌸 Loading...</h2>
+    <div class="cards"></div>
+    <div class="note"></div>
+    <div class="visit-container">
+      <a href="#" target="_blank" class="visit">🔗 Visit Live Website</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const project = params.get("project");
+
+    const data = {
+      food: {
+        title: "🌸 My Food Order Project Demo 🌸",
+        link: "https://food-new-zzaj.onrender.com/",
+        note: "This is a static preview of a full PHP + MySQL web app deployed via Render & Railway.",
+        cards: [
+          { img: "../images/home.png", caption: "🏠 Home – Welcome to Food Order" },
+          { img: "../images/login.png", caption: "🔐 Login – User credentials entry" },
+          { img: "../images/menu.png", caption: "📋 Restaurant – Browse the Restaurants" },
+          { img: "../images/restaurant.png", caption: "📋 Menu – Browse the Menu" },
+          { img: "../images/checkout.png", caption: "🛒 Checkout – Proceed to checkout" }
+        ]
+      },
+      buy: {
+        title: "🛍️ My Buy Now Project Demo 🛍️",
+        link: "https://buy-now-seven.vercel.app/",
+        note: "This is a React + Tailwind + REST API powered e-commerce demo site.",
+        cards: [
+          { img: "../images/buy_home.png", caption: "🏠 Home – Explore trending products" },
+          { img: "../images/buy_login.png", caption: "🔐 Login – User credentials entry" },
+          { img: "../images/buy_product.png", caption: "🛍️ Product Page – View Color, Size, Price & Add to Favourite" },
+          { img: "../images/buy_product_details.png", caption: "🛍️ Product Details Page – Details & Add to Cart" },
+          { img: "../images/buy_cart.png", caption: "🛒 Cart – View Cart Items" },
+          { img: "../images/buy_order_history.png", caption: "💳 Order History Page – View History of Order" }
+        ]
+      },
+      fashion: {
+        title: "👗 TaoTao Fashion Ecommerce Project Demo 👗",
+        link: "https://taotao.onrender.com/",
+        note: "A fashion-focused e-commerce demo with clothing categories, cart, and checkout flow.",
+        cards: [
+          { img: "../images/fashion_login.png", caption: "🔐 Login – User credentials entry" },
+          { img: "../images/fashion_register.png", caption: "🔐 Register – Registration form" },
+          { img: "../images/fashion_home.png", caption: "🏠 Home – Stylish fashion homepage" },
+          { img: "../images/fashion_category.png", caption: "📂 Category – Browse clothing categories with dropdown" },
+          { img: "../images/fashion_product.png", caption: "🛍️ Product Page – View products with details" },
+          { img: "../images/fashion_product_details.png", caption: "📖 Product Details – Select Size, Color & Add to Cart" },
+          { img: "../images/fashion_cart.png", caption: "🛒 Cart – Review selected fashion items" },
+          { img: "../images/fashion_checkout.png", caption: "💳 Checkout – Enter details & place order" },
+          { img: "../images/fashion_success.png", caption: "✅ Success – Order placed successfully!" }
+        ]
+      }
+    };
+
+    const content = data[project] || {
+      title: "❓ Unknown Project",
+      link: "#",
+      note: "Sorry, no preview available for this project.",
+      cards: []
+    };
+
+    document.querySelector("h2").textContent = content.title;
+    document.querySelector(".note").textContent = content.note;
+    document.querySelector(".visit").href = content.link;
+
+    const cardContainer = document.querySelector(".cards");
+    content.cards.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        <img src="${item.img}" alt="" />
+        <div class="caption">${item.caption}</div>
+      `;
+      cardContainer.appendChild(div);
+    });
+  </script>
+</body>
+
+</html>

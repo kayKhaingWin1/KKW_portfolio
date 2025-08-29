@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coffee & Snacks App Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2b2b3c, #a26da9, #f7d6ec);
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #fde68a, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+        }
+
+        .device-grid {
+            display: grid;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        @media (min-width: 1024px) {
+            .device-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .device-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .device-frame {
+            position: relative;
+            width: 100%;
+            max-width: 250px;
+            height: 545px;
+            object-fit: cover;
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 48px;
+            background: #1b1b1d;
+            box-shadow:
+                0 0 0 1.5px #3a3a3a,
+                0 0 0 5px #000,
+                0 10px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadeInUp 1s ease forwards;
+            opacity: 0;
+        }
+
+        .device-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 38px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 0.5px #111;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dynamic-island {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 88px;
+            height: 25px;
+            background: #0e0e0e;
+            border-radius: 20px;
+            z-index: 3;
+            box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.08);
+        }
+
+        .volume-button {
+            position: absolute;
+            left: -8px;
+            width: 10px;
+            height: 32px;
+            background: white;
+            border-radius: 2px;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        .volume-button.top {
+            top: 78px;
+        }
+
+        .volume-button.middle {
+            top: 122px;
+        }
+
+        .volume-button.bottom {
+            top: 166px;
+        }
+
+        .power-button {
+            position: absolute;
+            right: -8px;
+            top: 122px;
+            width: 10px;
+            height: 48px;
+            background: white;
+            border-radius: 2px;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        .home-indicator {
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 88px;
+            height: 4px;
+            background: #3c3c3c;
+            border-radius: 3px;
+            opacity: 0.5;
+            z-index: 3;
+        }
+
+        .caption {
+            font-size: 1rem;
+            color: white;
+            margin-top: 10px;
+        }
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+}
+
+.device-frame {
+    opacity: 0;
+    transform: translateY(40px); 
+}
+
+/* 出场动画类 */
+.fade-in {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* 退场动画类 */
+.fade-out {
+    animation: fadeOutDown 0.5s ease forwards;
+}
+
+    </style>
+</head>
+
+<body>
+    <h2>Coffee & Snacks App UI/UX</h2>
+    <div class="device-grid">
+        <!-- Screenshot 1 -->
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/u1.png" alt="Mocha Frappuccino"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">🥤 Mocha Frappuccino</div>
+        </div>
+
+        <!-- Screenshot 2 -->
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/u2.png" alt="Strawberry Frappuccino"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: #F87676;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">🍓 Strawberry Frappuccino</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/coffee_home.png" alt="Home"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">🏠 Home Screen</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/register.png" alt="Register"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">📝 Register</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/coffee_menu.png" alt="Menu"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">📋 Menu</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/coffee_product_details.png" alt="Product Details"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">📦 Product Details</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/coffee_cart.png" alt="Cart"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">🛒 Cart</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/coffee_checkout.png" alt="Checkout"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">💳 Checkout</div>
+        </div>
+
+        <div>
+            <div class="device-frame">
+                <div class="dynamic-island"></div>
+                <div class="volume-button top"></div>
+                <div class="volume-button middle"></div>
+                <div class="volume-button bottom"></div>
+                <div class="power-button"></div>
+                <div class="device-screen">
+                    <img src="../images/coffee_current_order.png" alt="Current Order"
+                        style="width: 100%; height: 100%; object-fit: contain; background-color: white;" />
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+            <div class="caption">📦 Current Order</div>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <h2>Operating steps</h2>
+        <div class="device-frame">
+            <div class="dynamic-island"></div>
+            <div class="volume-button top"></div>
+            <div class="volume-button middle"></div>
+            <div class="volume-button bottom"></div>
+            <div class="power-button"></div>
+            <div class="device-screen">
+                <video src="../videos/coffee_video.mp4"
+                    style="width: 100%; height: 100%; object-fit: contain; background-color: white;" autoplay loop muted
+                    playsinline></video>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+        <div class="caption">🎥 Live UX Prototype Walkthrough</div>
+    </div>
+</body>
+
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const frames = document.querySelectorAll(".device-grid > div .device-frame");
+    const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.4,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            const el = entry.target;
+
+            if (entry.isIntersecting) {
+                el.classList.add("fade-in");
+                el.style.animationDelay = `${index * 0.2}s`;
+            } else {
+                el.classList.remove("fade-in");
+                el.style.animationDelay = `${index * 0.2}s`;
+            }
+        });
+    }, options);
+
+    frames.forEach((el) => observer.observe(el));
+});
+</script>
