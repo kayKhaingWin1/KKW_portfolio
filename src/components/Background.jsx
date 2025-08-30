@@ -51,7 +51,7 @@ export default function Background() {
 
             <div className="relative">
               <a
-                href="/resume.pdf"
+                href="/KKW_resume.pdf"
                 download
                 className="inline-block z-20 bg-white text-pink-600 px-5 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base shadow-xl hover:scale-105 active:animate-pingShort animate-fadeIn delay-1000"
               >
