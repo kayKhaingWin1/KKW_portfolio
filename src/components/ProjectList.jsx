@@ -26,8 +26,8 @@ const projects = [
     title: "Ecommerce Website",
     description:
       "An e-commerce web app with React frontend and RESTful API backend for product listing and cart functionality.",
-    image: "https://buy-now-seven.vercel.app/images/bg3.jpg", 
-    link: "https://buy-now-seven.vercel.app/",
+    image: "https://buy-now-alpha.vercel.app/images/bg3.jpg", 
+    link: "https://buy-now-alpha.vercel.app/",
     demo: "/previews/demo.html?project=buy", 
     technologies: [
       "React",

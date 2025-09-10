@@ -227,7 +227,7 @@ export default function Header() {
                 duration: 0.2
               }
             }}
-            className="fixed top-16 left-0 w-full h-[calc(100vh-4rem)] shadow-lg z-40 rounded-b-3xl overflow-hidden"
+            className="fixed top-24 left-0 w-full h-[calc(100vh-4rem)] shadow-lg z-40 rounded-b-3xl overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-pink-100/80 via-white to-white backdrop-blur-sm"></div>
             <div className="relative h-full flex flex-col items-center justify-center">

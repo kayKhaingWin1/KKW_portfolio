@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   FaHtml5, FaCss3Alt, FaReact, FaJs, FaGitAlt, FaPhp, FaJava
 } from "react-icons/fa";
@@ -26,46 +26,36 @@ const skills = [
 ];
 
 export default function Skill() {
-  const sectionRef = useRef();
   const trackRef = useRef();
+  const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
-    const carousel = trackRef.current;
-    const carouselItems = [...carousel.children];
-    const itemWidth = carouselItems[0].offsetWidth + 24; 
-    carousel.innerHTML = '';
-    carousel.append(...carouselItems, ...carouselItems);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 当技能区滚动到可见时，一个一个显示技能
+            skills.forEach((_, i) => {
+              setTimeout(() => {
+                setVisibleCount((prev) => prev + 1);
+              }, i * 300); // 每个技能延迟 300ms 出现
+            });
+            observer.disconnect(); // 触发一次后断开观察
+          }
+        });
+      },
+      { threshold: 0.3 } // 30% 出现在视口就触发
+    );
 
-    let scrollPosition = 0;
-    const scrollSpeed = 2;
+    if (trackRef.current) observer.observe(trackRef.current);
 
-    const scroll = () => {
-      scrollPosition += scrollSpeed;
-      if (scrollPosition >= itemWidth * carouselItems.length) {
-        scrollPosition = 0;
-        carousel.style.transition = 'none';
-        carousel.style.transform = `translateX(0)`;
-        void carousel.offsetWidth; 
-      }
-
-      carousel.style.transition = 'transform 0.1s linear';
-      carousel.style.transform = `translateX(-${scrollPosition}px)`;
-
-      requestAnimationFrame(scroll);
-    };
-
-    const animationId = requestAnimationFrame(scroll);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
+    return () => observer.disconnect();
   }, []);
+
 
   return (
     <section
-      id="skills"
-      ref={sectionRef}
-      className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-20 overflow-hidden"
+      className="relative min-h-screen bg-black w-full flex flex-col items-center justify-center px-6 py-20 text-white overflow-hidden"
     >
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         {[...Array(100)].map((_, i) => (
@@ -85,24 +75,20 @@ export default function Skill() {
 
       <div className="absolute inset-0 shooting-stars z-0" />
 
-      {/* <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-pink-400 via-purple-400 to-white text-transparent bg-clip-text z-10">
-        ✨ My Skills ✨
-      </h2>
-      <div className="w-full max-w-6xl overflow-hidden z-10"> */}
       <h2 className="text-4xl md:text-5xl font-bold text-center p-4 mb-16 mt-4 bg-gradient-to-r from-pink-400 via-purple-400 to-white text-transparent bg-clip-text z-10">
         ✨ My Skills ✨
       </h2>
 
-      <div className="w-full max-w-6xl overflow-hidden z-10 pb-10">
-
+      <div className="w-full max-w-screen-xl z-10 ">
         <div
           ref={trackRef}
-          className="flex space-x-6 py-4"
+          className="flex flex-wrap justify-center gap-6 py-4 transition-all duration-500"
         >
           {skills.map((skill, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex flex-col items-center justify-center min-w-[150px] max-w-[150px] h-40 backdrop-blur-md bg-white/10 border border-pink-300/20 rounded-2xl p-6 text-center shadow-md transition-all duration-300 hover:scale-105"
+              className={`flex-shrink-0 flex flex-col items-center justify-center min-w-[150px] max-w-[150px] h-40 backdrop-blur-sm bg-white/10 rounded-2xl p-6 text-center shadow-md transition-all duration-500 hover:scale-105 ${i < visibleCount ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
+                }`}
             >
               <div className="text-4xl mb-2">{skill.icon}</div>
               <span className="text-base font-semibold bg-gradient-to-r from-pink-400 via-purple-400 to-white bg-clip-text text-transparent drop-shadow-md">
@@ -113,7 +99,6 @@ export default function Skill() {
         </div>
       </div>
 
-      {/* Unchanged styles */}
       <style jsx>{`
         .star {
           position: absolute;
@@ -152,20 +137,11 @@ export default function Skill() {
         }
 
         @keyframes shooting {
-          0% {
-            transform: translateX(0) translateY(0) rotate(45deg);
-            opacity: 0;
-          }
-          10% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateX(-1000px) translateY(1000px) rotate(45deg);
-            opacity: 0;
-          }
+          0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 0; }
+          10% { opacity: 1; }
+          100% { transform: translateX(-1000px) translateY(1000px) rotate(45deg); opacity: 0; }
         }
       `}</style>
     </section>
   );
 }
-
