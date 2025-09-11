@@ -492,7 +492,7 @@ export default function HomePage() {
 
             <div className="relative">
               <a
-                href="/KKW_resume.pdf"
+                href="/KKW_CV.pdf"
                 download
                 className="inline-block z-20 bg-white text-pink-600 px-5 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base shadow-xl hover:scale-105 active:animate-pingShort animate-fadeIn delay-1000 pointer-events-auto"
                 style={{ textShadow: 'none' }}
