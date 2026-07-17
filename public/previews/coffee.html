@@ -5,65 +5,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coffee & Snacks App Demo</title>
+    <link rel="stylesheet" href="theme.css" />
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem("theme");
+                var isDark = stored ? stored === "dark" : !window.matchMedia("(prefers-color-scheme: light)").matches;
+                document.documentElement.classList.toggle("dark", isDark);
+            } catch (e) {
+                document.documentElement.classList.add("dark");
+            }
+        })();
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 40px 20px;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a, #2b2b3c, #a26da9, #f7d6ec);
-            color: white;
-            text-align: center;
-            overflow-x: hidden;
-        }
-
-        h2 {
-            font-size: 2.5rem;
-            background: linear-gradient(to right, #fde68a, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
-        }
-
         .device-grid {
             display: grid;
-            gap: 40px;
+            gap: 48px 32px;
             justify-content: center;
-        }
-
-        @media (min-width: 1024px) {
-            .device-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .device-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 767px) {
-            .device-grid {
-                grid-template-columns: 1fr;
-            }
+            grid-template-columns: repeat(auto-fit, minmax(220px, 250px));
         }
 
         .device-frame {
             position: relative;
             width: 100%;
             max-width: 250px;
-            height: 545px;
-            object-fit: cover;
+            height: 520px;
             margin: 0 auto;
             padding: 10px;
             border-radius: 48px;
-            background: #1b1b1d;
+            background: #17171a;
             box-shadow:
-                0 0 0 1.5px #3a3a3a,
-                0 0 0 5px #000,
-                0 10px 20px rgba(0, 0, 0, 0.3);
+                0 0 0 1.5px rgba(212, 175, 55, 0.35),
+                0 0 0 5px #0b0b0d,
+                0 20px 40px rgba(0, 0, 0, 0.25),
+                0 0 40px rgba(212, 175, 55, 0.08);
             overflow: hidden;
-            animation: fadeInUp 1s ease forwards;
             opacity: 0;
         }
 
@@ -95,23 +71,14 @@
             left: -8px;
             width: 10px;
             height: 32px;
-            background: white;
+            background: #3a3a3a;
             border-radius: 2px;
-            opacity: 0.6;
             z-index: 0;
         }
 
-        .volume-button.top {
-            top: 78px;
-        }
-
-        .volume-button.middle {
-            top: 122px;
-        }
-
-        .volume-button.bottom {
-            top: 166px;
-        }
+        .volume-button.top { top: 78px; }
+        .volume-button.middle { top: 122px; }
+        .volume-button.bottom { top: 166px; }
 
         .power-button {
             position: absolute;
@@ -119,9 +86,8 @@
             top: 122px;
             width: 10px;
             height: 48px;
-            background: white;
+            background: #3a3a3a;
             border-radius: 2px;
-            opacity: 0.6;
             z-index: 0;
         }
 
@@ -132,62 +98,47 @@
             transform: translateX(-50%);
             width: 88px;
             height: 4px;
-            background: #3c3c3c;
+            background: rgba(212, 175, 55, 0.5);
             border-radius: 3px;
-            opacity: 0.5;
             z-index: 3;
         }
 
-        .caption {
-            font-size: 1rem;
-            color: white;
-            margin-top: 10px;
+        .device-caption {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            color: #3f3f46;
         }
 
-@keyframes fadeInUp {
-    from {
-        transform: translateY(40px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
+        html.dark .device-caption {
+            color: #e4e4e7;
+        }
 
-@keyframes fadeOutDown {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(40px);
-        opacity: 0;
-    }
-}
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
 
-.device-frame {
-    opacity: 0;
-    transform: translateY(40px); 
-}
+        .fade-in {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-/* 出场动画类 */
-.fade-in {
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-/* 退场动画类 */
-.fade-out {
-    animation: fadeOutDown 0.5s ease forwards;
-}
-
+        .walkthrough {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5rem;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Coffee & Snacks App UI/UX</h2>
+    <span class="eyebrow">UI/UX Design</span>
+    <h2 class="demo-title">Coffee &amp; Snacks App</h2>
+    <p class="note">Mobile app UI/UX design for a coffee and snacks ordering experience, from browsing to checkout.</p>
+
     <div class="device-grid">
-        <!-- Screenshot 1 -->
         <div>
             <div class="device-frame">
                 <div class="dynamic-island"></div>
@@ -201,10 +152,9 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">🥤 Mocha Frappuccino</div>
+            <div class="device-caption">Mocha Frappuccino</div>
         </div>
 
-        <!-- Screenshot 2 -->
         <div>
             <div class="device-frame">
                 <div class="dynamic-island"></div>
@@ -218,7 +168,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">🍓 Strawberry Frappuccino</div>
+            <div class="device-caption">Strawberry Frappuccino</div>
         </div>
 
         <div>
@@ -234,7 +184,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">🏠 Home Screen</div>
+            <div class="device-caption">Home Screen</div>
         </div>
 
         <div>
@@ -250,7 +200,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">📝 Register</div>
+            <div class="device-caption">Register</div>
         </div>
 
         <div>
@@ -266,7 +216,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">📋 Menu</div>
+            <div class="device-caption">Menu</div>
         </div>
 
         <div>
@@ -282,7 +232,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">📦 Product Details</div>
+            <div class="device-caption">Product Details</div>
         </div>
 
         <div>
@@ -298,7 +248,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">🛒 Cart</div>
+            <div class="device-caption">Cart</div>
         </div>
 
         <div>
@@ -314,7 +264,7 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">💳 Checkout</div>
+            <div class="device-caption">Checkout</div>
         </div>
 
         <div>
@@ -330,11 +280,13 @@
                 </div>
                 <div class="home-indicator"></div>
             </div>
-            <div class="caption">📦 Current Order</div>
+            <div class="device-caption">Current Order</div>
         </div>
     </div>
-    <div class="flex justify-center">
-        <h2>Operating steps</h2>
+
+    <div class="walkthrough">
+        <span class="eyebrow">Prototype</span>
+        <h2 class="demo-title" style="margin-bottom: 2rem;">Operating Steps</h2>
         <div class="device-frame">
             <div class="dynamic-island"></div>
             <div class="volume-button top"></div>
@@ -343,40 +295,32 @@
             <div class="power-button"></div>
             <div class="device-screen">
                 <video src="../videos/coffee_video.mp4"
-                    style="width: 100%; height: 100%; object-fit: contain; background-color: white;" autoplay loop muted
-                    playsinline></video>
+                    style="width: 100%; height: 100%; object-fit: contain; background-color: white;" autoplay loop
+                    muted playsinline></video>
             </div>
             <div class="home-indicator"></div>
         </div>
-        <div class="caption">🎥 Live UX Prototype Walkthrough</div>
+        <div class="device-caption">Live UX prototype walkthrough</div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const frames = document.querySelectorAll(".device-frame");
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry, i) => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animationDelay = `${(i % 4) * 0.1}s`;
+                            entry.target.classList.add("fade-in");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.3 }
+            );
+            frames.forEach((el) => observer.observe(el));
+        });
+    </script>
 </body>
 
 </html>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const frames = document.querySelectorAll(".device-grid > div .device-frame");
-    const options = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.4,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            const el = entry.target;
-
-            if (entry.isIntersecting) {
-                el.classList.add("fade-in");
-                el.style.animationDelay = `${index * 0.2}s`;
-            } else {
-                el.classList.remove("fade-in");
-                el.style.animationDelay = `${index * 0.2}s`;
-            }
-        });
-    }, options);
-
-    frames.forEach((el) => observer.observe(el));
-});
-</script>

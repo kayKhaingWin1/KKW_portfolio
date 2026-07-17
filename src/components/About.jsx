@@ -1,139 +1,154 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import ScrollReveal from "./fx/ScrollReveal";
+import BlurText from "./fx/BlurText";
 
-export default function About() {
+const education = [
+  {
+    title: "BSc (Hons) Business Computing and Information Systems",
+    org: "University of Central Lancashire (UCLan)",
+  },
+  {
+    title: "Graduated at MCTA Chinese High School",
+    org: "",
+  },
+  {
+    title: "Certified in UI/UX Design",
+    org: "iNet College",
+  },
+  {
+    title: "Certified in PHP Laravel and React",
+    org: "Host Myanmar Institute",
+  },
+];
+
+const EASE = [0.16, 1, 0.3, 1];
+
+const blobPath =
+  "M45.3,-58.3C58.2,-49.3,68.1,-34.5,71.4,-18.4C74.7,-2.3,71.4,15.1,63.2,29.5C55,43.9,41.9,55.3,26.7,62.1C11.5,68.9,-5.8,71.1,-21.8,66.7C-37.8,62.3,-52.5,51.3,-61.5,36.8C-70.5,22.3,-73.8,4.3,-70.6,-12.1C-67.4,-28.5,-57.7,-43.3,-44.5,-52.3C-31.3,-61.3,-15.7,-64.5,0.7,-65.4C17,-66.3,34.1,-64.9,45.3,-58.3Z";
+
+function BlobPortrait() {
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+
   return (
-    // <section
-    //   id="about"
-    //   className="relative min-h-screen w-full py-24 px-6 bg-gradient-to-br from-pink-100 via-purple-100 to-white text-gray-800 snap-start overflow-hidden"
-    // >
-    <section
-      id="about"
-      className="relative min-h-screen w-full py-24 px-6 text-gray-800 snap-start overflow-hidden"
-      style={{
-        background: "linear-gradient(to bottom,#bfa3c9 0%, #f7eaff 40%, #fff 100%)",
-      }}
-    >
-      <div className="absolute -top-28 left-1/4 w-96 h-96 bg-pink-200 opacity-25 blur-[100px] rounded-full animate-ping z-0" />
-      <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-purple-300 opacity-25 blur-[120px] rounded-full animate-pulse z-0" />
-
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute top-20 left-10 text-pink-400 text-4xl z-50 pointer-events-none"
+    <div className="relative mx-auto h-[26rem] w-[26rem] shrink-0 sm:h-[30rem] sm:w-[30rem] md:h-[36rem] md:w-[36rem]">
+      <motion.svg
+        viewBox="-100 -100 200 200"
+        className="pointer-events-none absolute -inset-10 z-0 h-[calc(100%+5rem)] w-[calc(100%+5rem)]"
+        animate={reduceMotion ? undefined : { rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
       >
-        ✨
-      </motion.div>
-      <motion.div
-        animate={{ x: [0, 12, 0] }}
-        transition={{ duration: 6, repeat: Infinity }}
-        className="absolute bottom-20 right-16 text-purple-400 text-4xl z-50 pointer-events-none"
-      >
-        🍕
-      </motion.div>
-      <motion.div
-        animate={{ rotate: [0, 15, -15, 0] }}
-        transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-20 right-16 text-pink-300 text-3xl z-50 pointer-events-none"
-      >
-        💗
-      </motion.div>
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 5, repeat: Infinity }}
-        className="absolute bottom-20 left-16 text-yellow-300 text-3xl z-50 pointer-events-none"
-      >
-        🧸
-      </motion.div>
+        <path
+          d={blobPath}
+          fill="none"
+          className="stroke-gold-500/40 dark:stroke-gold-300/30"
+          strokeWidth={1}
+        />
+      </motion.svg>
 
-      {/* 💎 内容卡片 */}
-      <motion.div
-        initial={{ opacity: 0, y: 80 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 80 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center backdrop-blur-xl bg-white/30 bg-opacity-20 rounded-3xl shadow-xl overflow-hidden"
-      >
-        {/* 🖼 图片左侧 */}
-        <div className="relative md:w-1/2 w-full flex justify-center items-center p-6 md:p-12">
-          <div className="relative">
-            <img
-              src="/aboutme.jpg"
-              alt="My Photo"
-              className="w-[380px] h-[auto] object-cover rounded-[2rem] shadow-xl 
-        mask-image-[radial-gradient(ellipse_at_center,white,transparent)] 
-        transition-all duration-700"
-              style={{
-                WebkitMaskImage:
-                  "radial-gradient(ellipse at center, rgba(255,255,255,1) 60%, rgba(255,255,255,0.2) 100%)",
-                maskImage:
-                  "radial-gradient(ellipse at center, rgba(255,255,255,1) 60%, rgba(255,255,255,0.2) 100%)",
-              }}
-            />
-          </div>
-        </div>
-
-
-        {/* 📜 内容右侧 */}
-        <div className="md:w-1/2 w-full p-6 md:pr-12 space-y-6 z-20">
-          {/* 背景故事 */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            <h2 className="text-3xl font-bold text-pink-500 mb-3">My Journey 🌸</h2>
-            <p className="text-base leading-relaxed text-gray-700">
-              I grew up with a love for colors, characters, and technology.
-              What started as sketching anime turned into UI/UX, and eventually
-              became a passion for web development. I enjoy creating things
-              that feel alive and thoughtful.
-            </p>
-          </motion.div>
-
-          {/* 教育经历 */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="space-y-3"
-          >
-            <h3 className="text-2xl font-semibold text-purple-500 mt-6">Education 🎓</h3>
-            <ul className="space-y-2">
-              {[
-                {
-                  title:
-                    "BSc (Hons) Business Computing and Information Systems",
-                  org: "University of Central Lancashire (UCLan)",
-                },
-                {
-                  title: "Graduated at MCTA Chinese High School",
-                  org: "",
-                },
-                {
-                  title: "Certified in UI/UX Design",
-                  org: "iNet College",
-                },
-                {
-                  title: "Certified in PHP Laravel and React",
-                  org: "Host Myanmar Institute",
-                },
-              ].map((item, index) => (
-                <li
-                  key={index}
-                  className="bg-white/40 backdrop-blur-sm rounded-xl px-4 py-3 shadow-inner border-l-4 border-pink-300"
-                >
-                  <p className="font-bold text-gray-800">{item.title}</p>
-                  {item.org && (
-                    <p className="text-sm text-gray-600">{item.org}</p>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </motion.div>
-    </section>
+      {/* Plain square crop (the source photo is a 1:1 image) so the whole
+          face is always visible — the blob line above is purely a halo,
+          it no longer clips the photo. */}
+      <img
+        src="/aboutme.jpg"
+        alt="Portrait of Kay Khaing Win"
+        className="relative z-10 h-full w-full rounded-[2.5rem] object-cover shadow-2xl"
+      />
+    </div>
   );
 }
 
+function EducationStepper() {
+  return (
+    <ol className="relative">
+      {education.map((item, index) => {
+        const isLast = index === education.length - 1;
+        return (
+          <li key={index} className="relative flex gap-5 pb-9 last:pb-0">
+            {!isLast && (
+              <motion.span
+                aria-hidden="true"
+                className="absolute left-[7px] top-4 w-px origin-top bg-gold-400/25 dark:bg-gold-300/20"
+                style={{ height: "calc(100% - 0.75rem)" }}
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.6, delay: index * 0.15 + 0.1, ease: EASE }}
+              />
+            )}
+            <motion.span
+              aria-hidden="true"
+              className="relative z-10 mt-1 h-3.5 w-3.5 shrink-0 rounded-full border-2 border-gold-500 bg-[#f5f5f7] dark:border-gold-300 dark:bg-[#050507]"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ type: "spring", stiffness: 320, damping: 18, delay: index * 0.15 }}
+            />
+            <motion.div
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.5, delay: index * 0.15 + 0.05, ease: EASE }}
+              className="-mt-1"
+            >
+              <p className="font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">{item.title}</p>
+              {item.org && (
+                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-500">{item.org}</p>
+              )}
+            </motion.div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+export default function About() {
+  return (
+    <section
+      id="about"
+      className="relative snap-start min-h-[100dvh] w-full py-24 px-6 overflow-hidden"
+    >
+      <div className="absolute top-1/3 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-gold-500/[0.05] blur-[130px] dark:bg-gold-500/10" />
+
+      <div className="relative mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-8 lg:items-start">
+          <ScrollReveal className="lg:col-span-7">
+            <h2 className="mb-6 text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
+              <BlurText text="About" />
+            </h2>
+            <div className="flex flex-col gap-5">
+              <BlobPortrait />
+              <p className="max-w-md text-sm leading-relaxed text-zinc-700 sm:text-base dark:text-zinc-300">
+                I bring a sharp eye for interface design, a collaborative
+                mindset, and a knack for solving tricky problems — the mix
+                that turns a rough idea into{" "}
+                <span className="font-medium text-gold-600 dark:text-gold-300">
+                  a screen people actually enjoy using
+                </span>
+                .
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
+            className="lg:col-span-5"
+          >
+            <p className="text-sm font-medium text-gold-600 dark:text-gold-300 mb-6">
+              Education
+            </p>
+            <EducationStepper />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}

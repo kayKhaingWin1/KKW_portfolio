@@ -1,267 +1,151 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import GlassSurface from "./GlassSurface";
+import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
+import MobileSidebar from "./MobileSidebar";
 
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
+  { name: "Experience", href: "#experience" },
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
 ];
 
 export default function Header() {
   const [active, setActive] = useState("#home");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [rotate, setRotate] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const scrollY = window.scrollY;
-  //     const sections = navItems.map((item) =>
-  //       document.querySelector(item.href)
-  //     );
-
-  //     for (let i = 0; i < sections.length; i++) {
-  //       const section = sections[i];
-  //       if (
-  //         section &&
-  //         scrollY >= section.offsetTop - 100 &&
-  //         scrollY < section.offsetTop + section.offsetHeight
-  //       ) {
-  //         const newHash = navItems[i].href;
-  //         setActive(newHash);
-  //         if (window.location.hash !== newHash) {
-  //           window.history.replaceState(null, "", newHash);
-  //         }
-  //         break; // 提高性能：找到后就跳出循环
-  //       }
-  //     }
-  //   };
-
-
-  //   const handleResize = () => {
-  //     setIsDesktop(window.innerWidth >= 768);
-  //     if (window.innerWidth >= 768) {
-  //       setMenuOpen(false);
-  //       setRotate(0);
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   window.addEventListener("resize", handleResize);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5, // 50% 可见才算进入
-  };
+    const root = document.getElementById("scroll-root");
+    const sections = navItems
+      .map((item) => document.querySelector(item.href))
+      .filter(Boolean);
+    if (!sections.length) return;
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const id = `#${entry.target.id}`;
+    // A thin band around the vertical center of the scroll container, rather than
+    // "50% of the section visible" — that fails for any section taller than the
+    // viewport (e.g. Projects), since it can never show half of its own height.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries.filter((entry) => entry.isIntersecting);
+        if (!intersecting.length) return;
+        const topMost = intersecting.reduce((a, b) =>
+          a.boundingClientRect.top <= b.boundingClientRect.top ? a : b
+        );
+        const id = `#${topMost.target.id}`;
         setActive(id);
-
-        // ✅ 更新 URL hash，不会刷新或跳转
         if (window.location.hash !== id) {
           window.history.replaceState(null, "", id);
         }
-      }
-    });
-  }, observerOptions);
+      },
+      { root, rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
 
-  // 监听每一个 section
-  navItems.forEach((item) => {
-    const section = document.querySelector(item.href);
-    if (section) {
-      observer.observe(section);
-    }
-  });
-
-  // 处理窗口大小变化
-  const handleResize = () => {
-    setIsDesktop(window.innerWidth >= 768);
-    if (window.innerWidth >= 768) {
-      setMenuOpen(false);
-      setRotate(0);
-    }
-  };
-
-  window.addEventListener("resize", handleResize);
-
-  return () => {
-    observer.disconnect();
-    window.removeEventListener("resize", handleResize);
-  };
-}, []);
-
-  const isLightSection = active === "#about" || active === "#contact";
-
-  const toggleMenu = () => {
-    setRotate((prev) => prev + 180);
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleNavClick = (href) => {
-    setActive(href);
-    if (!isDesktop) {
-      setMenuOpen(false);
-      setRotate((prev) => prev + 180);
-    }
-  };
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-lg shadow-md">
-      <nav
-        className={`flex justify-between items-center px-6 md:px-10 py-4 transition-colors duration-500 ${isLightSection ? "text-gray-800" : "text-white"
-          }`}
+    <>
+      {/* Logo */}
+      <motion.div
+        className="fixed top-5 left-5 z-50"
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
       >
-        {/* Logo */}
-        <h1
-          className={`text-2xl font-bold tracking-wide transition-colors duration-500 ${isLightSection ? "text-pink-600" : "text-pink-200"
-            }`}
-        >
-          <img src="../images/logo.png" className="w-16 h-16" alt="" />
-        </h1>
+        <Logo className="drop-shadow-lg" />
+      </motion.div>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 text-base font-medium">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                onClick={() => handleNavClick(item.href)}
-                className={`relative transition-all duration-300 ease-in-out ${active === item.href
-                    ? isLightSection
-                      ? "text-pink-600"
-                      : "text-pink-300"
-                    : isLightSection
-                      ? "hover:text-pink-600"
-                      : "hover:text-pink-200"
-                  }`}
-              >
-                {item.name}
-                {active === item.href && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute left-0 -bottom-1 w-full h-0.5 bg-pink-400 rounded-full"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <ThemeToggle />
 
+      {/* Apple-style floating dock (desktop) */}
+      <nav
+        className="fixed bottom-6 left-1/2 z-50 hidden max-w-[94vw] -translate-x-1/2 md:block"
+        aria-label="Primary"
+      >
+        <GlassSurface borderRadius={28} distortionScale={-120}>
+          <ul className="relative flex items-center gap-1 px-2 py-2">
+            {navItems.map((item) => {
+              const isActive = active === item.href;
+              return (
+                <li key={item.href} className="relative shrink-0">
+                  {isActive && (
+                    <motion.div
+                      layoutId="apple-liquid-pill"
+                      className="absolute inset-0 rounded-full bg-gold-500/10 ring-1 ring-gold-400/40 dark:bg-gold-500/15"
+                      transition={{ type: "spring", stiffness: 380, damping: 30, mass: 0.7 }}
+                    />
+                  )}
 
-        <button
-          onClick={toggleMenu}
-          className="md:hidden focus:outline-none relative z-50"
-          aria-label="Toggle menu"
-        >
-          <motion.div
-            animate={{ rotate: rotate }}
-            transition={{ duration: 0.3 }}
-            className="w-8 h-8 flex items-center justify-center"
-          >
-            {menuOpen ? (
-              <motion.span
-                initial={{ opacity: 0, rotate: -180 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                className={`text-5xl font-light flex items-center justify-center h-full ${isLightSection ? "text-gray-800" : "text-white"
-                  }`}
-              >
-                &times;
-              </motion.span>
-            ) : (
-              <motion.div
-                className="flex flex-col items-center justify-center h-full"
-                whileHover={{ scale: 1.1 }}
-              >
-                <span
-                  className={`block w-6 h-0.5 rounded-full mb-1.5 transition-all ${isLightSection ? "bg-gray-800" : "bg-white"
+                  <motion.a
+                    href={item.href}
+                    onClick={() => setActive(item.href)}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.92 }}
+                    transition={{ type: "spring", stiffness: 420, damping: 22 }}
+                    className={`relative z-20 block whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-medium tracking-wide sm:px-4 sm:text-sm ${
+                      isActive
+                        ? "text-gold-600 dark:text-gold-300"
+                        : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                     }`}
-                ></span>
-                <span
-                  className={`block w-6 h-0.5 rounded-full mb-1.5 transition-all ${isLightSection ? "bg-gray-800" : "bg-white"
-                    }`}
-                ></span>
-                <span
-                  className={`block w-6 h-0.5 rounded-full transition-all ${isLightSection ? "bg-gray-800" : "bg-white"
-                    }`}
-                ></span>
-              </motion.div>
-            )}
-          </motion.div>
-        </button>
+                  >
+                    {item.name}
+                  </motion.a>
+                </li>
+              );
+            })}
+          </ul>
+        </GlassSurface>
       </nav>
 
+      {/* Menu / close toggle (mobile) */}
+      <motion.button
+        type="button"
+        onClick={() => setMobileOpen((v) => !v)}
+        aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        aria-expanded={mobileOpen}
+        className="fixed bottom-6 right-6 z-50 md:hidden"
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      >
+        <GlassSurface borderRadius={28} distortionScale={-120}>
+          <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden">
+            <AnimatePresence initial={false}>
+              <motion.span
+                key={mobileOpen ? "close" : "menu"}
+                initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+                transition={{ type: "spring", stiffness: 520, damping: 28 }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                {mobileOpen ? (
+                  <X className="h-5 w-5 text-[#1D1D1F] dark:text-[#F5F5F7]" strokeWidth={1.5} />
+                ) : (
+                  <Menu className="h-5 w-5 text-[#1D1D1F] dark:text-[#F5F5F7]" strokeWidth={1.5} />
+                )}
+              </motion.span>
+            </AnimatePresence>
+          </span>
+        </GlassSurface>
+      </motion.button>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: {
-                type: "spring",
-                damping: 20,
-                stiffness: 300
-              }
-            }}
-            exit={{
-              opacity: 0,
-              y: -20,
-              scale: 0.95,
-              transition: {
-                duration: 0.2
-              }
-            }}
-            className="fixed top-24 left-0 w-full h-[calc(100vh-4rem)] shadow-lg z-40 rounded-b-3xl overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-pink-100/80 via-white to-white backdrop-blur-sm"></div>
-            <div className="relative h-full flex flex-col items-center justify-center">
-              <ul className="w-full max-w-xs space-y-4 text-lg font-medium">
-                {navItems.map((item) => (
-                  <motion.li
-                    key={item.href}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                      transition: {
-                        duration: 0.3
-                      }
-                    }}
-                    exit={{ opacity: 0 }}
-                  >
-                    <a
-                      href={item.href}
-                      onClick={() => handleNavClick(item.href)}
-                      className={`block py-4 px-6 rounded-xl transition-all ${active === item.href
-                          ? "bg-pink-100/80 text-pink-700 font-semibold shadow-sm"
-                          : "hover:bg-pink-50/60 hover:text-pink-600"
-                        }`}
-                    >
-                      {item.name}
-                    </a>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+      <MobileSidebar
+        items={navItems}
+        active={active}
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        onNavigate={(href) => {
+          setActive(href);
+          setMobileOpen(false);
+        }}
+      />
+    </>
   );
 }

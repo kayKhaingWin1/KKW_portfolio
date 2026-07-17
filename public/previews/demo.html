@@ -5,150 +5,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Demo Preview</title>
+  <link rel="stylesheet" href="theme.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("theme");
+        var isDark = stored ? stored === "dark" : !window.matchMedia("(prefers-color-scheme: light)").matches;
+        document.documentElement.classList.toggle("dark", isDark);
+      } catch (e) {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
   <style>
-    html,
-    body {
-      height: max-content;
-      margin: 0;
-      padding: 0 20px 60px;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #1a1a1a, #2b2b3c, #a26da9, #f7d6ec);
-      color: white;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    h2 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 50px;
-      padding: 0.75rem;
-      background: linear-gradient(to right, #fde68a, #ffffff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .floating-circle {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.15;
-      animation: float 12s ease-in-out infinite alternate;
-    }
-
-    .pink {
-      width: 380px;
-      height: 380px;
-      background-color: #f9a8d4;
-      top: -120px;
-      left: -120px;
-    }
-
-    .purple {
-      width: 380px;
-      height: 380px;
-      background-color: #c084fc;
-      bottom: -120px;
-      right: -120px;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-      }
-
-      100% {
-        transform: translateY(20px) scale(1.1);
-      }
-    }
-
-    .section {
-      max-width: 960px;
-      margin: auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      overflow: hidden;
-      margin-bottom: 40px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    }
-
-    .card img {
-      width: 100%;
-      display: block;
-    }
-
-    .caption {
-      padding: 20px;
-      text-align: center;
-      font-size: 1.1rem;
-      color: #e0d5ff;
-    }
-
-    .note {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #d8d8ff;
-      margin-top: 40px;
-    }
-
-    .visit-container {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .visit {
-      display: inline-block;
-      padding: 14px 32px;
-      font-size: 1rem;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #1a1a1a, #2b2b3c, #a26da9, #f7d6ec);
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .visit::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -75%;
-      width: 50%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: skewX(-20deg);
-      animation: shimmer 2.5s infinite;
-      z-index: 2;
-    }
-
-    @keyframes shimmer {
-      0% {
-        left: -75%;
-      }
-
-      100% {
-        left: 125%;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .card .caption {
-        font-size: 1rem;
-      }
+    .cards {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     }
   </style>
 </head>
@@ -156,11 +29,12 @@
 <body>
 
   <div class="section">
-    <h2>🌸 Loading...</h2>
+    <span class="eyebrow">Project Preview</span>
+    <h2 class="demo-title">Loading…</h2>
+    <p class="note"></p>
     <div class="cards"></div>
-    <div class="note"></div>
     <div class="visit-container">
-      <a href="#" target="_blank" class="visit">🔗 Visit Live Website</a>
+      <a href="#" target="_blank" class="glass-pill">Visit Live Website ↗</a>
     </div>
   </div>
 
@@ -170,65 +44,66 @@
 
     const data = {
       food: {
-        title: "🌸 My Food Order Project Demo 🌸",
+        title: "Food Order — Project Demo",
         link: "https://foodorder-2ly0.onrender.com",
-        note: "This is a static preview of a full PHP + MySQL web app deployed via Render & Railway.",
+        note: "A full PHP + MySQL web app for browsing restaurants, building an order, and checking out — deployed via Render.",
         cards: [
-          { img: "../images/home.png", caption: "🏠 Home – Welcome to Food Order" },
-          { img: "../images/login.png", caption: "🔐 Login – User credentials entry" },
-          { img: "../images/menu.png", caption: "📋 Restaurant – Browse the Restaurants" },
-          { img: "../images/restaurant.png", caption: "📋 Menu – Browse the Menu" },
-          { img: "../images/checkout.png", caption: "🛒 Checkout – Proceed to checkout" }
+          { img: "../images/home.png", caption: "Home — welcome to Food Order" },
+          { img: "../images/login.png", caption: "Login — user credentials entry" },
+          { img: "../images/menu.png", caption: "Restaurants — browse the restaurant list" },
+          { img: "../images/restaurant.png", caption: "Menu — browse a restaurant's menu" },
+          { img: "../images/checkout.png", caption: "Checkout — proceed to checkout" }
         ]
       },
       buy: {
-        title: "🛍️ My Buy Now Project Demo 🛍️",
+        title: "Buy Now — Project Demo",
         link: "https://buy-now-alpha.vercel.app/",
-        note: "This is a React + Tailwind + REST API powered e-commerce demo site.",
+        note: "A React + Tailwind e-commerce demo backed by a REST API.",
         cards: [
-          { img: "../images/buy_home.png", caption: "🏠 Home – Explore trending products" },
-          { img: "../images/buy_login.png", caption: "🔐 Login – User credentials entry" },
-          { img: "../images/buy_product.png", caption: "🛍️ Product Page – View Color, Size, Price & Add to Favourite" },
-          { img: "../images/buy_product_details.png", caption: "🛍️ Product Details Page – Details & Add to Cart" },
-          { img: "../images/buy_cart.png", caption: "🛒 Cart – View Cart Items" },
-          { img: "../images/buy_order_history.png", caption: "💳 Order History Page – View History of Order" }
+          { img: "../images/buy_home.png", caption: "Home — explore trending products" },
+          { img: "../images/buy_login.png", caption: "Login — user credentials entry" },
+          { img: "../images/buy_product.png", caption: "Product — colour, size, price and favourites" },
+          { img: "../images/buy_product_details.png", caption: "Product details — add to cart" },
+          { img: "../images/buy_cart.png", caption: "Cart — view cart items" },
+          { img: "../images/buy_order_history.png", caption: "Order history — past orders" }
         ]
       },
       fashion: {
-        title: "👗 TaoTao Fashion Ecommerce Project Demo 👗",
+        title: "TaoTao — Fashion Ecommerce Demo",
         link: "https://taotao.onrender.com/",
-        note: "A fashion-focused e-commerce demo with clothing categories, cart, and checkout flow.",
+        note: "A fashion-focused e-commerce demo with clothing categories, cart, and a full checkout flow.",
         cards: [
-          { img: "../images/fashion_login.png", caption: "🔐 Login – User credentials entry" },
-          { img: "../images/fashion_register.png", caption: "🔐 Register – Registration form" },
-          { img: "../images/fashion_home.png", caption: "🏠 Home – Stylish fashion homepage" },
-          { img: "../images/fashion_category.png", caption: "📂 Category – Browse clothing categories with dropdown" },
-          { img: "../images/fashion_product.png", caption: "🛍️ Product Page – View products with details" },
-          { img: "../images/fashion_product_details.png", caption: "📖 Product Details – Select Size, Color & Add to Cart" },
-          { img: "../images/fashion_cart.png", caption: "🛒 Cart – Review selected fashion items" },
-          { img: "../images/fashion_checkout.png", caption: "💳 Checkout – Enter details & place order" },
-          { img: "../images/fashion_success.png", caption: "✅ Success – Order placed successfully!" }
+          { img: "../images/fashion_login.png", caption: "Login — user credentials entry" },
+          { img: "../images/fashion_register.png", caption: "Register — registration form" },
+          { img: "../images/fashion_home.png", caption: "Home — fashion homepage" },
+          { img: "../images/fashion_category.png", caption: "Category — browse clothing categories" },
+          { img: "../images/fashion_product.png", caption: "Product — view products with details" },
+          { img: "../images/fashion_product_details.png", caption: "Product details — size, colour, add to cart" },
+          { img: "../images/fashion_cart.png", caption: "Cart — review selected items" },
+          { img: "../images/fashion_checkout.png", caption: "Checkout — enter details and place order" },
+          { img: "../images/fashion_success.png", caption: "Success — order placed" }
         ]
       }
     };
 
     const content = data[project] || {
-      title: "❓ Unknown Project",
+      title: "Unknown Project",
       link: "#",
-      note: "Sorry, no preview available for this project.",
+      note: "Sorry, no preview is available for this project.",
       cards: []
     };
 
     document.querySelector("h2").textContent = content.title;
     document.querySelector(".note").textContent = content.note;
-    document.querySelector(".visit").href = content.link;
+    document.querySelector(".glass-pill").href = content.link;
 
     const cardContainer = document.querySelector(".cards");
-    content.cards.forEach(item => {
+    content.cards.forEach((item, i) => {
       const div = document.createElement("div");
-      div.className = "card";
+      div.className = "glass-card reveal";
+      div.style.animationDelay = `${i * 0.08}s`;
       div.innerHTML = `
-        <img src="${item.img}" alt="" />
+        <img src="${item.img}" alt="" loading="lazy" />
         <div class="caption">${item.caption}</div>
       `;
       cardContainer.appendChild(div);

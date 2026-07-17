@@ -2,8 +2,49 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import emailjs from "emailjs-com";
 import { FaFacebookF, FaInstagram, FaTelegramPlane, FaViber } from "react-icons/fa";
+import { ArrowUpRight } from "lucide-react";
+import BlurText from "./fx/BlurText";
+import ScrollReveal from "./fx/ScrollReveal";
+import GlassSurface from "./GlassSurface";
+import { useTheme } from "../context/theme";
+
+const socials = [
+  { icon: FaFacebookF, href: "https://facebook.com", label: "Facebook" },
+  { icon: FaInstagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: FaTelegramPlane, href: "https://t.me", label: "Telegram" },
+  { icon: FaViber, href: "viber://chat?number=%2B1234567890", label: "Viber" },
+];
+
+const details = [
+  { label: "Phone", value: "09777822908" },
+  { label: "Email", value: "helilin2908@gmail.com" },
+];
+
+// Line fields — small label above, no box, just a hairline that lights up
+// gold on focus.
+function FormField({ id, label, as = "input", ...props }) {
+  const Tag = as;
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+      >
+        {label}
+      </label>
+      <Tag
+        id={id}
+        name={id}
+        required
+        className="w-full resize-none border-0 border-b border-black/15 bg-transparent px-0 py-2.5 text-[#1D1D1F] placeholder:text-zinc-400 focus:outline-none focus:ring-0 focus:border-gold-500 dark:border-white/15 dark:text-[#F5F5F7] dark:placeholder:text-zinc-600 dark:focus:border-gold-300"
+        {...props}
+      />
+    </div>
+  );
+}
 
 export default function Contact() {
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,145 +65,178 @@ export default function Contact() {
         "ReLzYCp6lQoljNWH3"
       )
       .then(() => {
-        // 自动回复用原始 formData，确保 email 和 name 变量匹配模板设置
         emailjs.send(
           "service_2j3m36p",
           "template_owyqoio",
           formData,
           "ReLzYCp6lQoljNWH3"
         );
-        alert("Message sent successfully! 💌");
+        alert("Message sent successfully.");
         setFormData({ name: "", email: "", message: "" });
       })
-      .catch(() => alert("Something went wrong 😢"));
+      .catch(() => alert("Something went wrong. Please try again."));
   };
 
   return (
     <>
-      <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -40 }}
-        transition={{ duration: 0.8 }}
+      <section
         id="contact"
-        className="relative min-h-screen w-full px-6 py-24 items-center justify-center overflow-hidden"
-        style={{
-          background: "linear-gradient(to bottom,#ffc2d4, #fce4ec, #ffffff)",
-        }}
+        className="relative snap-start min-h-[100dvh] w-full px-6 py-20 flex items-center overflow-hidden"
       >
-        {/* ✨ 漂浮 Emoji 动画 */}
-        <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity }} className="absolute top-20 left-10 text-pink-400 text-4xl z-50 pointer-events-none">✨</motion.div>
-        <motion.div animate={{ x: [0, 12, 0] }} transition={{ duration: 6, repeat: Infinity }} className="absolute bottom-20 right-16 text-purple-400 text-4xl z-50 pointer-events-none">🍕</motion.div>
-        <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 8, repeat: Infinity }} className="absolute top-24 right-16 text-pink-300 text-3xl z-50 pointer-events-none">💗</motion.div>
-        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity }} className="absolute bottom-20 left-16 text-yellow-300 text-3xl z-50 pointer-events-none">🧸</motion.div>
+        <div className="absolute -bottom-32 left-1/4 h-96 w-96 rounded-full bg-gold-500/[0.06] blur-[130px] dark:bg-gold-500/12" />
 
-        {/* 💌 表单与联系方式 */}
-        <div className="relative z-10 max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 bg-white/30 backdrop-blur-lg p-10 rounded-3xl shadow-2xl border border-white/40">
-
-          {/* Left: 联系信息 with 左侧滑入动画 */}
+        <div className="relative mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           <motion.div
-            initial={{ opacity: 0, x: -60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6 text-gray-900"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6"
           >
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Get in Touch 💬
+            <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight text-[#1D1D1F] sm:text-5xl lg:text-6xl dark:text-[#F5F5F7]">
+              <BlurText text="Let's build" />
+              <br />
+              <BlurText text="something" />{" "}
+              <span className="text-gold-600 dark:text-gold-300">good</span>.
             </h2>
-            <p className="text-lg text-gray-700">
-              I'm open to freelance work, collabs, or just friendly chats! 🥰
-            </p>
-            <div className="space-y-3 text-base font-medium">
-              <p>📱 <span className="text-purple-500">Phone:</span> 09777822908</p>
-              <p>📧 <span className="text-purple-500">Email:</span> helilin15@gmail.com</p>
-              <p>🐱 <span className="text-purple-500">GitHub:</span> <a href="https://github.com/kayKhaingWin1" className="underline text-blue-500">kayKhaingWin1</a></p>
-              <p>🌐 <span className="text-purple-500">LinkedIn:</span> <a href="https://www.linkedin.com" className="underline text-blue-500">linkedin.com/in/kaykhaingwin</a></p>
-              <p>💬 <span className="text-purple-500">Discord:</span> Kay#9910</p>
-              <p>🎨 <span className="text-purple-500">Dribbble:</span> <a href="https://dribbble.com" className="underline text-pink-400">@kaykhaing</a></p>
-            </div>
+            <ScrollReveal delay={0.1} className="mt-5 max-w-sm">
+              <p className="text-base leading-relaxed text-zinc-600 dark:text-zinc-500">
+                Open to freelance work, collaborations, or a straightforward
+                conversation about a project.
+              </p>
+            </ScrollReveal>
+
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={{ show: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } }}
+              className="mt-8 space-y-2 text-sm text-zinc-600 dark:text-zinc-400"
+            >
+              {details.map((d) => (
+                <motion.p
+                  key={d.label}
+                  variants={{ hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0 } }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <span className="text-zinc-500 dark:text-zinc-600">{d.label}</span> &nbsp;{d.value}
+                </motion.p>
+              ))}
+              <motion.p variants={{ hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0 } }} transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}>
+                <span className="text-zinc-500 dark:text-zinc-600">GitHub</span> &nbsp;
+                <a href="https://github.com/helilin2908" className="text-zinc-700 hover:text-gold-600 transition-colors dark:text-zinc-300 dark:hover:text-gold-300">
+                  helilin2908
+                </a>
+              </motion.p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.4 } } }}
+              className="mt-6 flex items-center gap-5"
+            >
+              {socials.map((s) => (
+                <motion.a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.94 }}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-zinc-600 hover:text-gold-600 hover:border-gold-400/40 transition-colors dark:border-white/10 dark:text-zinc-400 dark:hover:text-gold-300"
+                >
+                  <s.icon className="text-sm" />
+                </motion.a>
+              ))}
+            </motion.div>
           </motion.div>
 
-          {/* Right: 表单 with 右侧滑入动画 */}
-          <motion.form
-            onSubmit={handleSubmit}
-            initial={{ opacity: 0, x: 60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6 bg-white/60 backdrop-blur-xl rounded-xl p-8 shadow-xl"
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6"
           >
-            <h3 className="text-2xl font-bold text-purple-500 mb-4">
-              Send a Message 💌
-            </h3>
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-purple-200 bg-white/80 text-purple-700 placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-purple-200 bg-white/80 text-purple-700 placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
-              required
-            />
-            <textarea
-              name="message"
-              placeholder="Your Message"
-              rows="5"
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-purple-200 bg-white/80 text-purple-700 placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-300 resize-none"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-6 rounded-full transition duration-300"
-            >
-              Send Message ✨
-            </button>
-          </motion.form>
+            <div className="w-full rounded-[2rem] border border-black/10 bg-white/50 p-6 shadow-xl sm:p-10 dark:border-white/10 dark:bg-white/[0.03]">
+              <p className="text-sm font-medium text-gold-600 dark:text-gold-300">
+                Contact Form
+              </p>
+              <h3 className="mt-1 mb-6 text-xl font-semibold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
+                Send a message
+              </h3>
+              <form onSubmit={handleSubmit} className="w-full space-y-5">
+                <FormField
+                  id="name"
+                  label="Name"
+                  type="text"
+                  placeholder="Your name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                <FormField
+                  id="email"
+                  label="Email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <FormField
+                  id="message"
+                  label="Message"
+                  as="textarea"
+                  rows={4}
+                  placeholder="Tell me a bit about your project"
+                  value={formData.message}
+                  onChange={handleChange}
+                />
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                  className="mt-2 w-full"
+                >
+                  <GlassSurface borderRadius={999} distortionScale={-110} width="100%">
+                    <button
+                      type="submit"
+                      className="flex w-full items-center justify-center gap-2 whitespace-nowrap py-3 text-sm font-medium text-gold-600 transition-colors hover:text-gold-500 dark:text-gold-300 dark:hover:text-gold-200"
+                    >
+                      Send Message
+                      <ArrowUpRight className="h-4 w-4" strokeWidth={1.75} />
+                    </button>
+                  </GlassSurface>
+                </motion.div>
+              </form>
+            </div>
+          </motion.div>
         </div>
+      </section>
 
-      </motion.section>
-      <footer className="relative w-full py-8 text-white overflow-hidden">
+      <footer className="relative w-full overflow-hidden px-6 pb-6 pt-4">
+        <p
+          aria-hidden="true"
+          className="pointer-events-none select-none text-center text-[14vw] font-semibold leading-none tracking-tight text-transparent sm:text-[10vw]"
+          style={{
+            WebkitTextStroke:
+              theme === "dark" ? "1px rgba(245,245,247,0.06)" : "1px rgba(29,29,31,0.05)",
+          }}
+        >
+          Kay Khaing Win
+        </p>
 
-        {/* 背景微光效果 */}
-        <div className="absolute inset-0  opacity-10 blur-3xl pointer-events-none"></div>
-
-        {/* 上方分割线 */}
-        <div className="relative w-32 h-[2px] bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 mx-auto mb-8 rounded-full shadow-md"></div>
-
-        {/* 社交图标 */}
-        <div className=" text-center ">
-          <div className="relative flex justify-center items-center gap-10 mb-6 z-10">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 text-3xl transition transform hover:scale-110 duration-300">
-              <FaFacebookF />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-400 text-3xl transition transform hover:scale-110  duration-300">
-              <FaInstagram />
-            </a>
-            <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 text-3xl transition transform hover:scale-110 duration-300">
-              <FaTelegramPlane />
-            </a>
-            <a href="viber://chat?number=%2B1234567890" target="_blank" rel="noopener noreferrer" className="text-purple-500 hover:text-purple-400 text-3xl transition transform hover:scale-110 duration-300">
-              <FaViber />
-            </a>
-          </div>
-          <p className="relative text-sm text-gray-300 z-10 mb-2">
-            &copy; {new Date().getFullYear()} KKW. All rights reserved.
+        <div className="relative mx-auto -mt-8 flex max-w-6xl justify-center border-t border-black/10 pt-5 dark:border-white/10">
+          <p className="text-sm text-zinc-600 dark:text-zinc-500">
+            &copy; {new Date().getFullYear()} Kay Khaing Win. All rights reserved.
           </p>
         </div>
-
-
-        <div className="relative w-40 h-[2px] bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 mx-auto rounded-full shadow-md z-10"></div>
       </footer>
-
     </>
   );
 }
